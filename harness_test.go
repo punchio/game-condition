@@ -100,17 +100,17 @@ type cell struct {
 }
 
 // memCounter 是 Counter 的测试实现。
-type memCounter struct {
+type memCounter[InstanceKey comparable] struct {
 	m       map[InstanceKey]map[uint16]*cell
 	updates int
 	dels    int
 }
 
-func newMemCounter() *memCounter {
-	return &memCounter{m: make(map[InstanceKey]map[uint16]*cell)}
+func newMemCounter[InstanceKey comparable]() *memCounter[InstanceKey] {
+	return &memCounter[InstanceKey]{m: make(map[InstanceKey]map[uint16]*cell)}
 }
 
-func (c *memCounter) Update(k InstanceKey, index uint16, acc Acc, val int64) {
+func (c *memCounter[InstanceKey]) Update(k InstanceKey, index uint16, acc Acc, val int64) {
 	c.updates++
 	slots := c.m[k]
 	if slots == nil {
@@ -152,7 +152,7 @@ func (c *memCounter) Update(k InstanceKey, index uint16, acc Acc, val int64) {
 	cl.has = true
 }
 
-func (c *memCounter) Read(k InstanceKey, index uint16, acc Acc) (int64, bool) {
+func (c *memCounter[InstanceKey]) Read(k InstanceKey, index uint16, acc Acc) (int64, bool) {
 	slots := c.m[k]
 	if slots == nil {
 		return 0, false
@@ -164,7 +164,7 @@ func (c *memCounter) Read(k InstanceKey, index uint16, acc Acc) (int64, bool) {
 	return cl.val, true
 }
 
-func (c *memCounter) Del(k InstanceKey) {
+func (c *memCounter[InstanceKey]) Del(k InstanceKey) {
 	c.dels++
 	delete(c.m, k)
 }
@@ -178,9 +178,9 @@ func mustParse(t *testing.T, text string) Expr {
 	return e
 }
 
-func newTestManager(t *testing.T, state StateSource) (*Manager, *memCounter, *Plans) {
+func newTestManager(t *testing.T, state StateSource) (*Manager[uint64], *memCounter[uint64], *Plans) {
 	t.Helper()
-	c := newMemCounter()
+	c := newMemCounter[uint64]()
 	plans := NewPlans()
 	m, err := NewManager(c, state, plans)
 	if err != nil {
@@ -189,7 +189,7 @@ func newTestManager(t *testing.T, state StateSource) (*Manager, *memCounter, *Pl
 	return m, c, plans
 }
 
-func register(t *testing.T, m *Manager, plans *Plans, key InstanceKey, e Expr, h Handler) {
+func register(t *testing.T, m *Manager[uint64], plans *Plans, key uint64, e Expr, h Handler) {
 	t.Helper()
 	if err := plans.Add(e); err != nil {
 		t.Fatalf("Plans.Add: %v", err)

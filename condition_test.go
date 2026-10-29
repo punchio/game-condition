@@ -225,7 +225,7 @@ func TestOwnSharesStateQueryWithOuterLeaf(t *testing.T) {
 	if err := plans.Add(e); err != nil {
 		t.Fatal(err)
 	}
-	for _, key := range []InstanceKey{1, 2} {
+	for _, key := range []uint64{1, 2} {
 		if err := m.Register(key, e, nil); err != nil {
 			t.Fatal(err)
 		}
@@ -241,7 +241,7 @@ func TestOwnSharesStateQueryWithOuterLeaf(t *testing.T) {
 	if got := b.evals - before; got != 1 {
 		t.Fatalf("普通状态叶与 own 在一轮内查询 %d 次，期望 1 次", got)
 	}
-	for _, key := range []InstanceKey{1, 2} {
+	for _, key := range []uint64{1, 2} {
 		if got, has := counter.Read(key, 1, AccCount); !has || got != 1 {
 			t.Fatalf("实例 %d 事件计数 = %d (has=%v)，期望 1", key, got, has)
 		}
@@ -320,14 +320,14 @@ func TestOwnUsesRoundSharedState(t *testing.T) {
 		m.Trigger(cs)
 	}
 	fireEvent()
-	for _, key := range []InstanceKey{1, 2} {
+	for _, key := range []uint64{1, 2} {
 		if got, has := counter.Read(key, 0, AccCount); !has || got != 1 {
 			t.Fatalf("同一轮实例 %d 未共享 own 状态: value=%d has=%v", key, got, has)
 		}
 	}
 
 	fireEvent()
-	for _, key := range []InstanceKey{1, 2} {
+	for _, key := range []uint64{1, 2} {
 		if got, has := counter.Read(key, 0, AccCount); !has || got != 1 {
 			t.Fatalf("后续轮未使用标脏后的 own 状态: key=%d value=%d has=%v", key, got, has)
 		}
@@ -479,7 +479,7 @@ func TestSharedStateEvaluation(t *testing.T) {
 		t.Fatal(err)
 	}
 	for i := 0; i < 1000; i++ {
-		if err := m.Register(InstanceKey(i+1), e, nil); err != nil {
+		if err := m.Register(uint64(i+1), e, nil); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -615,8 +615,8 @@ func TestRegistrationOrder(t *testing.T) {
 	if err := plans.Add(e); err != nil {
 		t.Fatal(err)
 	}
-	var order []InstanceKey
-	for _, k := range []InstanceKey{3, 1, 2} {
+	var order []uint64
+	for _, k := range []uint64{3, 1, 2} {
 		key := k
 		if err := m.Register(key, e, func(Result) bool {
 			order = append(order, key)
@@ -645,8 +645,8 @@ func TestCancelDuringDispatch(t *testing.T) {
 		t.Fatal(err)
 	}
 	armed := false
-	var order []InstanceKey
-	for _, k := range []InstanceKey{1, 2, 3} {
+	var order []uint64
+	for _, k := range []uint64{1, 2, 3} {
 		key := k
 		h := func(Result) bool {
 			if armed && key == 1 {
@@ -687,7 +687,7 @@ func TestUnregisterReclaimsSlot(t *testing.T) {
 		t.Fatal(err)
 	}
 	for i := 1; i <= 3; i++ {
-		if err := m.Register(InstanceKey(i), e, nil); err != nil {
+		if err := m.Register(uint64(i), e, nil); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -717,12 +717,12 @@ func TestBulkUnregister(t *testing.T) {
 		t.Fatal(err)
 	}
 	for i := 1; i <= 100; i++ {
-		if err := m.Register(InstanceKey(i), e, nil); err != nil {
+		if err := m.Register(uint64(i), e, nil); err != nil {
 			t.Fatal(err)
 		}
 	}
 	for i := 1; i <= 90; i++ {
-		m.Unregister(InstanceKey(i))
+		m.Unregister(uint64(i))
 	}
 
 	count := 0
@@ -761,10 +761,10 @@ func TestRegisterErrors(t *testing.T) {
 	if err := m.Register(1, e, nil); err != errDuplicate {
 		t.Fatalf("重复实例应报错，得到 %v", err)
 	}
-	if _, err := NewManager(nil, b, plans); err != errNilCounter {
+	if _, err := NewManager[uint64](nil, b, plans); err != errNilCounter {
 		t.Fatalf("nil Counter 应报错，得到 %v", err)
 	}
-	if _, err := NewManager(newMemCounter(), b, nil); err != errNilPlans {
+	if _, err := NewManager(newMemCounter[uint64](), b, nil); err != errNilPlans {
 		t.Fatalf("nil Plans 应报错，得到 %v", err)
 	}
 }
@@ -973,7 +973,7 @@ func TestValueAcrossEvents(t *testing.T) {
 
 // 纯事件场景可以不接 StateSource。
 func TestNilStateSource(t *testing.T) {
-	c := newMemCounter()
+	c := newMemCounter[uint64]()
 	plans := NewPlans()
 	m, err := NewManager(c, nil, plans)
 	if err != nil {
@@ -1004,13 +1004,13 @@ func TestPlansSharedAcrossManagers(t *testing.T) {
 		t.Fatal(err)
 	}
 	b1 := &bag{items: []rec{item(2, 5, 1, 1)}}
-	c1 := newMemCounter()
+	c1 := newMemCounter[uint64]()
 	m1, err := NewManager(c1, b1, plans)
 	if err != nil {
 		t.Fatal(err)
 	}
 	b2 := &bag{}
-	c2 := newMemCounter()
+	c2 := newMemCounter[uint64]()
 	m2, err := NewManager(c2, b2, plans)
 	if err != nil {
 		t.Fatal(err)

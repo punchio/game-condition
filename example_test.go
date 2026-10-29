@@ -7,15 +7,15 @@ import (
 )
 
 // exampleCounter is a minimal AccCount-only example, not production storage.
-type exampleCounter struct {
-	values map[condition.InstanceKey]map[uint16]int64
+type exampleCounter[InstanceKey comparable] struct {
+	values map[InstanceKey]map[uint16]int64
 }
 
-func newExampleCounter() *exampleCounter {
-	return &exampleCounter{values: make(map[condition.InstanceKey]map[uint16]int64)}
+func newExampleCounter[InstanceKey comparable]() *exampleCounter[InstanceKey] {
+	return &exampleCounter[InstanceKey]{values: make(map[InstanceKey]map[uint16]int64)}
 }
 
-func (c *exampleCounter) Update(k condition.InstanceKey, index uint16, acc condition.Acc, val int64) {
+func (c *exampleCounter[InstanceKey]) Update(k InstanceKey, index uint16, acc condition.Acc, val int64) {
 	if acc != condition.AccCount {
 		panic("exampleCounter only supports AccCount")
 	}
@@ -27,7 +27,7 @@ func (c *exampleCounter) Update(k condition.InstanceKey, index uint16, acc condi
 	slots[index] += val
 }
 
-func (c *exampleCounter) Read(k condition.InstanceKey, index uint16, acc condition.Acc) (int64, bool) {
+func (c *exampleCounter[InstanceKey]) Read(k InstanceKey, index uint16, acc condition.Acc) (int64, bool) {
 	if acc != condition.AccCount {
 		return 0, false
 	}
@@ -35,7 +35,7 @@ func (c *exampleCounter) Read(k condition.InstanceKey, index uint16, acc conditi
 	return value, ok
 }
 
-func (c *exampleCounter) Del(k condition.InstanceKey) {
+func (c *exampleCounter[InstanceKey]) Del(k InstanceKey) {
 	delete(c.values, k)
 }
 
@@ -68,10 +68,10 @@ func Example() {
 	mustExample(err)
 	plans := condition.NewPlans()
 	mustExample(plans.Add(expr))
-	manager, err := condition.NewManager(newExampleCounter(), nil, plans)
+	manager, err := condition.NewManager(newExampleCounter[string](), nil, plans)
 	mustExample(err)
 
-	err = manager.Register(42, expr, func(result condition.Result) bool {
+	err = manager.Register("quest-42", expr, func(result condition.Result) bool {
 		fmt.Printf("round=%d match=%t progress=%d\n",
 			result.Round, result.Match, result.Progress[0].Value)
 		return result.Match
@@ -113,10 +113,10 @@ func ExampleManager() {
 	mustExample(err)
 	plans := condition.NewPlans()
 	mustExample(plans.Add(expr))
-	manager, err := condition.NewManager(newExampleCounter(), state, plans)
+	manager, err := condition.NewManager(newExampleCounter[uint64](), state, plans)
 	mustExample(err)
 
-	err = manager.Register(7, expr, func(result condition.Result) bool {
+	err = manager.Register(uint64(7), expr, func(result condition.Result) bool {
 		fmt.Printf("round=%d match=%t value=%d\n",
 			result.Round, result.Match, result.Progress[0].Value)
 		return result.Match

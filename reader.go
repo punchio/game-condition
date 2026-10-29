@@ -88,7 +88,7 @@ func (r dataReader) delta(acc Acc, records []eventRecord) (int64, bool) {
 }
 
 // allow 按实例检查 own 前置条件，状态查询使用轮内共享缓存。
-func (r dataReader) allow(ctx *evalContext) bool {
+func allow[InstanceKey comparable](r dataReader, ctx *evalContext[InstanceKey]) bool {
 	return r.own == nil || evalOwn(ctx, r.own)
 }
 
@@ -176,7 +176,7 @@ func aggregateEventAvgBig(records []eventRecord, flt Filter, attr Attr) (int64, 
 }
 
 // evalOwn 按实例检查前置条件，状态查询使用轮内共享缓存。
-func evalOwn(ctx *evalContext, e exprNode) bool {
+func evalOwn[InstanceKey comparable](ctx *evalContext[InstanceKey], e exprNode) bool {
 	switch n := e.(type) {
 	case *constExpr:
 		return n.val

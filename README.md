@@ -46,12 +46,12 @@ if err := plans.Add(expr); err != nil {
 	panic(err)
 }
 
-manager, err := condition.NewManager(newExampleCounter(), nil, plans)
+manager, err := condition.NewManager(newExampleCounter[string](), nil, plans)
 if err != nil {
 	panic(err)
 }
 
-err = manager.Register(42, expr, func(result condition.Result) bool {
+err = manager.Register("quest-42", expr, func(result condition.Result) bool {
 	fmt.Printf("round=%d match=%t progress=%d\n",
 		result.Round, result.Match, result.Progress[0].Value)
 	return result.Match // Complete and unregister when matched.
@@ -109,7 +109,15 @@ State and events answer different questions:
 
 ## Counter contract
 
-Applications implement `Counter` to persist event progress:
+Applications implement `Counter[InstanceKey]` to persist event progress. `InstanceKey` is a `comparable` type parameter shared with the manager, so integers, strings, and comparable structs can be used directly without conversion:
+
+```go
+type Counter[InstanceKey comparable] interface {
+	Update(k InstanceKey, index uint16, acc Acc, val int64)
+	Read(k InstanceKey, index uint16, acc Acc) (val int64, has bool)
+	Del(k InstanceKey)
+}
+```
 
 - A counter slot is identified by `(InstanceKey, leaf index)`.
 - Leaf indexes follow expression order starting at zero. State leaves consume an index but do not read or write the counter.
@@ -130,7 +138,7 @@ Changing leaf order or adding leaves changes their indexes. Migrate or reset per
 
 A `Manager` serves one owner and is not safe for concurrent use. Expressions returned by `Parse` are immutable and can be shared across managers. A `Plans` table can be shared after configuration loading is complete.
 
-A `Counter` and `Plans` may be shared across managers. When sharing a counter across owners, include the owner identity in the instance key so different owners cannot overwrite each other's progress.
+A `Counter` and `Plans` may be shared across managers. When sharing a counter across owners, make keys unique across the shared storage. A comparable struct containing both the owner identity and condition instance ID can provide this directly, preventing one owner from overwriting another's progress.
 
 ## Testing and benchmarks
 
@@ -141,9 +149,11 @@ go vet ./...
 go test -bench=. -benchmem ./...
 ```
 
-## Design
+## Documentation
 
 - [Chinese design documentation](docs/design.md)
+- [Migrating to generic InstanceKey](docs/migration-generic-instance-key.md)
+- [v1.0.0 release notes](docs/release-notes-v1.0.0.md)
 - [Editable Trigger sequence diagram](docs/diagrams/trigger-sequence/trigger-sequence.kanva.pptd)
 
 ## License

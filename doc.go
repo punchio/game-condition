@@ -10,6 +10,10 @@
 // shared after configuration loading. Each evaluation returns an independent
 // Result.Progress slice that callers may retain.
 //
+// Manager and Counter use the same caller-selected comparable InstanceKey type.
+// Integer and string keys work directly; comparable structs can carry multiple
+// fields, such as an owner identity and a condition instance ID.
+//
 // The package does not include business models or storage implementations.
 // Applications define state systems, attributes, StateSource, and Counter.
 package condition

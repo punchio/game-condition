@@ -5,9 +5,9 @@ import (
 	"testing"
 )
 
-func newEventBenchManager(b *testing.B) (*Manager, *memCounter, *Plans) {
+func newEventBenchManager(b *testing.B) (*Manager[uint64], *memCounter[uint64], *Plans) {
 	b.Helper()
-	counter := newMemCounter()
+	counter := newMemCounter[uint64]()
 	plans := NewPlans()
 	m, err := NewManager(counter, nil, plans)
 	if err != nil {
@@ -39,7 +39,7 @@ func benchEventChangeSet(b *testing.B, id, class int64) *ChangeSet {
 }
 
 // warmUpEventBench 预分配 steady-state 所需缓冲，并确认基准事件确实命中。
-func warmUpEventBench(b *testing.B, m *Manager, counter *memCounter, cs *ChangeSet, key InstanceKey) {
+func warmUpEventBench(b *testing.B, m *Manager[uint64], counter *memCounter[uint64], cs *ChangeSet, key uint64) {
 	b.Helper()
 	m.Trigger(cs)
 	if value, has := counter.Read(key, 0, AccSum); !has || value != 1 {
@@ -75,7 +75,7 @@ func BenchmarkEventSameExpr_1000Regs_SingleTrigger(b *testing.B) {
 		b.Fatal(err)
 	}
 	for i := 1; i <= 1000; i++ {
-		if err := m.Register(InstanceKey(i), e, nil); err != nil {
+		if err := m.Register(uint64(i), e, nil); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -97,7 +97,7 @@ func BenchmarkEventDistinctExpr_1000Regs_SingleTrigger_1Hit(b *testing.B) {
 		if err := plans.Add(e); err != nil {
 			b.Fatal(err)
 		}
-		if err := m.Register(InstanceKey(i), e, nil); err != nil {
+		if err := m.Register(uint64(i), e, nil); err != nil {
 			b.Fatal(err)
 		}
 	}

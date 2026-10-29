@@ -14,10 +14,6 @@ const SourceEvent Source = 1
 // eventAttrID 是事件自身的 id 属性（事件域），对应 DSL 的 event_id。
 const eventAttrID Attr = 0
 
-// InstanceKey 是条件实例键，在一个 Manager 内必须唯一。
-// Manager 只服务一个 owner，业务可以直接使用条件实例 id，或自行编码分区信息。
-type InstanceKey = uint64
-
 // Acc 是聚合方式。
 // first 与 value 在事件内和跨事件都不同：同一事件内 value 取最后一条匹配记录，
 // first 取第一条；写入计数器后 first 保留首次观测，value 被最新观测覆盖。
@@ -108,7 +104,7 @@ type Handler func(Result) bool
 //   - 同一 (k, index) 上的 acc 必须前后一致，否则 Read 返回 has=false；
 //   - Read 的 has=false 表示从未观测，条件据此判定为不满足；
 //   - Del 删除该实例的全部计数，条件结束时由框架调用。
-type Counter interface {
+type Counter[InstanceKey comparable] interface {
 	Update(k InstanceKey, index uint16, acc Acc, val int64)
 	Read(k InstanceKey, index uint16, acc Acc) (val int64, has bool)
 	Del(k InstanceKey)

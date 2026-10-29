@@ -9,25 +9,25 @@ const (
 	regCanceled
 )
 
-type registration struct {
+type registration[InstanceKey comparable] struct {
 	key   InstanceKey
-	plan  *plan
+	plan  *plan[InstanceKey]
 	h     Handler
 	state regState
 }
 
 // plan 是一份表达式在某个 Manager 内的运行期绑定。
-type plan struct {
+type plan[InstanceKey comparable] struct {
 	sig      string
 	prog     *program
-	slots    []*sourceState
-	ownSlots map[*leafExpr]*sourceState
+	slots    []*sourceState[InstanceKey]
+	ownSlots map[*leafExpr]*sourceState[InstanceKey]
 	hasEvent bool // 表达式里是否含事件叶，编译期确定
 
 	// active 按注册顺序保存本计划的实例。注销只把 state 置为 canceled，
 	// 数组本身不动，因此在回调里注销不会打断正在进行的遍历；
 	// 墓碑由 sweep 在遍历之外统一清理。
-	active      []*registration
+	active      []*registration[InstanceKey]
 	activeCount int
 	dirty       bool // 有待清理的墓碑
 
@@ -37,20 +37,20 @@ type plan struct {
 
 // sourceState 是一个状态查询的共享求值单元：
 // 指纹相同的查询（同数据域、同过滤、同聚合、同属性）只求值一次。
-type sourceState struct {
+type sourceState[InstanceKey comparable] struct {
 	fp    string
 	q     Query
 	value int64
 	has   bool
 	dirty bool
 
-	plans []*plan
+	plans []*plan[InstanceKey]
 }
 
 // depRef 是索引条目：状态依赖带 slot（用于标脏），事件依赖只有 plan。
-type depRef struct {
-	plan      *plan
-	slot      *sourceState
+type depRef[InstanceKey comparable] struct {
+	plan      *plan[InstanceKey]
+	slot      *sourceState[InstanceKey]
 	dirtyOnly bool // 只标脏状态缓存，不唤醒计划
 }
 
@@ -60,9 +60,9 @@ type attrKey struct {
 }
 
 // depBucket 是某个 (域, 属性) 上的依赖集合。
-type depBucket struct {
-	wild  []depRef
-	exact map[int64][]depRef
+type depBucket[InstanceKey comparable] struct {
+	wild  []depRef[InstanceKey]
+	exact map[int64][]depRef[InstanceKey]
 }
 
 type commandKind uint8
@@ -72,9 +72,9 @@ const (
 	cmdTrigger
 )
 
-type command struct {
+type command[InstanceKey comparable] struct {
 	kind commandKind
-	reg  *registration
+	reg  *registration[InstanceKey]
 	cs   *ChangeSet
 }
 
@@ -86,22 +86,22 @@ type pendingDelta struct {
 
 // Manager 是条件管理器，一个玩家（owner）一个，非并发安全。
 // Counter 与 Plans 由业务持有并在 Manager 间共享；StateSource 绑定到该玩家。
-type Manager struct {
-	counter Counter
+type Manager[InstanceKey comparable] struct {
+	counter Counter[InstanceKey]
 	state   StateSource
 	table   *Plans
 
-	regs    map[InstanceKey]*registration
-	plans   map[string]*plan
-	sources map[string]*sourceState
-	deps    map[attrKey]*depBucket
+	regs    map[InstanceKey]*registration[InstanceKey]
+	plans   map[string]*plan[InstanceKey]
+	sources map[string]*sourceState[InstanceKey]
+	deps    map[attrKey]*depBucket[InstanceKey]
 
 	round      uint64
-	queue      []command
-	affected   []*plan
-	dirtyPlans []*plan
+	queue      []command[InstanceKey]
+	affected   []*plan[InstanceKey]
+	dirtyPlans []*plan[InstanceKey]
 	pending    []pendingDelta
-	ctx        evalContext
+	ctx        evalContext[InstanceKey]
 	busy       bool
 }
 
@@ -110,28 +110,28 @@ type Manager struct {
 // counter 与 plans 不能为空；state 可以为空（纯事件计次场景），
 // 为空时状态叶与 own 恒不满足。同一份 Counter/Plans 可以跨 Manager 共享，
 // 但 Counter 的键需在实例维度带上玩家信息（见 Counter 契约）。
-func NewManager(counter Counter, state StateSource, plans *Plans) (*Manager, error) {
+func NewManager[InstanceKey comparable](counter Counter[InstanceKey], state StateSource, plans *Plans) (*Manager[InstanceKey], error) {
 	if counter == nil {
 		return nil, errNilCounter
 	}
 	if plans == nil {
 		return nil, errNilPlans
 	}
-	return &Manager{
+	return &Manager[InstanceKey]{
 		counter: counter,
 		state:   state,
 		table:   plans,
-		regs:    make(map[InstanceKey]*registration),
-		plans:   make(map[string]*plan),
-		sources: make(map[string]*sourceState),
-		deps:    make(map[attrKey]*depBucket),
-		ctx:     evalContext{state: state, counter: counter},
+		regs:    make(map[InstanceKey]*registration[InstanceKey]),
+		plans:   make(map[string]*plan[InstanceKey]),
+		sources: make(map[string]*sourceState[InstanceKey]),
+		deps:    make(map[attrKey]*depBucket[InstanceKey]),
+		ctx:     evalContext[InstanceKey]{state: state, counter: counter},
 	}, nil
 }
 
 // Register 注册一个条件实例。注册后会立即求值并回调一次初始进度。
 // Handler 返回 true 表示条件完成，注册随即移除并清理计数。
-func (m *Manager) Register(key InstanceKey, e Expr, h Handler) error {
+func (m *Manager[InstanceKey]) Register(key InstanceKey, e Expr, h Handler) error {
 	if m == nil {
 		return errNilManager
 	}
@@ -146,14 +146,14 @@ func (m *Manager) Register(key InstanceKey, e Expr, h Handler) error {
 		return errUnknownPlan
 	}
 	p := m.bindPlan(sig, e)
-	reg := &registration{key: key, plan: p, h: h, state: regPending}
+	reg := &registration[InstanceKey]{key: key, plan: p, h: h, state: regPending}
 	m.regs[key] = reg
-	m.submit(command{kind: cmdRegister, reg: reg})
+	m.submit(command[InstanceKey]{kind: cmdRegister, reg: reg})
 	return nil
 }
 
 // Unregister 取消注册并清理该实例的计数；重复调用安全。
-func (m *Manager) Unregister(key InstanceKey) {
+func (m *Manager[InstanceKey]) Unregister(key InstanceKey) {
 	if m == nil {
 		return
 	}
@@ -163,7 +163,7 @@ func (m *Manager) Unregister(key InstanceKey) {
 }
 
 // Len 返回当前注册的实例数（含等待执行的注册）。
-func (m *Manager) Len() int {
+func (m *Manager[InstanceKey]) Len() int {
 	if m == nil {
 		return 0
 	}
@@ -171,37 +171,37 @@ func (m *Manager) Len() int {
 }
 
 // Trigger 提交一次业务变化；Handler 内再次调用会自动排队。
-func (m *Manager) Trigger(cs *ChangeSet) {
+func (m *Manager[InstanceKey]) Trigger(cs *ChangeSet) {
 	if m == nil || cs == nil || cs.empty() {
 		return
 	}
 	if m.busy {
-		m.queue = append(m.queue, command{kind: cmdTrigger, cs: cs.clone()})
+		m.queue = append(m.queue, command[InstanceKey]{kind: cmdTrigger, cs: cs.clone()})
 		return
 	}
-	m.submit(command{kind: cmdTrigger, cs: cs})
+	m.submit(command[InstanceKey]{kind: cmdTrigger, cs: cs})
 }
 
 // ---- 运行期绑定 ----
 
 // bindPlan 取得计划的运行期绑定，首次使用时把状态叶挂到共享的 sourceState，
 // 并把每个叶的依赖 Key 写入索引。
-func (m *Manager) bindPlan(sig string, e Expr) *plan {
+func (m *Manager[InstanceKey]) bindPlan(sig string, e Expr) *plan[InstanceKey] {
 	if p, ok := m.plans[sig]; ok {
 		return p
 	}
 	prog := e.plan()
-	p := &plan{
+	p := &plan[InstanceKey]{
 		sig:      sig,
 		prog:     prog,
-		slots:    make([]*sourceState, prog.stateCount),
+		slots:    make([]*sourceState[InstanceKey], prog.stateCount),
 		hasEvent: prog.hasEvent(),
-		active:   make([]*registration, 0, 4),
+		active:   make([]*registration[InstanceKey], 0, 4),
 	}
 	m.plans[sig] = p
 	for i := range p.prog.leaves {
 		lp := &p.prog.leaves[i]
-		var slot *sourceState
+		var slot *sourceState[InstanceKey]
 		if lp.kind == readerState {
 			slot = m.bindSource(p, lp.src)
 			p.slots[lp.slot] = slot
@@ -216,17 +216,17 @@ func (m *Manager) bindPlan(sig string, e Expr) *plan {
 	return p
 }
 
-func (m *Manager) bindSource(p *plan, r dataReader) *sourceState {
+func (m *Manager[InstanceKey]) bindSource(p *plan[InstanceKey], r dataReader) *sourceState[InstanceKey] {
 	slot := m.sources[r.fp]
 	if slot == nil {
-		slot = &sourceState{fp: r.fp, q: r.q, dirty: true}
+		slot = &sourceState[InstanceKey]{fp: r.fp, q: r.q, dirty: true}
 		m.sources[slot.fp] = slot
 	}
 	slot.plans = appendUniquePlan(slot.plans, p)
 	return slot
 }
 
-func (m *Manager) bindOwn(p *plan, e exprNode) {
+func (m *Manager[InstanceKey]) bindOwn(p *plan[InstanceKey], e exprNode) {
 	switch n := e.(type) {
 	case *leafExpr:
 		if n.src.kind != readerState {
@@ -234,7 +234,7 @@ func (m *Manager) bindOwn(p *plan, e exprNode) {
 		}
 		slot := m.bindSource(p, n.src)
 		if p.ownSlots == nil {
-			p.ownSlots = make(map[*leafExpr]*sourceState)
+			p.ownSlots = make(map[*leafExpr]*sourceState[InstanceKey])
 		}
 		p.ownSlots[n] = slot
 		for _, k := range n.src.keys() {
@@ -247,18 +247,18 @@ func (m *Manager) bindOwn(p *plan, e exprNode) {
 	}
 }
 
-func (m *Manager) addDep(p *plan, k ChangeKey, slot *sourceState) {
+func (m *Manager[InstanceKey]) addDep(p *plan[InstanceKey], k ChangeKey, slot *sourceState[InstanceKey]) {
 	m.addDepMode(p, k, slot, false)
 }
 
-func (m *Manager) addDepMode(p *plan, k ChangeKey, slot *sourceState, dirtyOnly bool) {
+func (m *Manager[InstanceKey]) addDepMode(p *plan[InstanceKey], k ChangeKey, slot *sourceState[InstanceKey], dirtyOnly bool) {
 	ak := attrKey{src: k.src, attr: k.attr}
 	b := m.deps[ak]
 	if b == nil {
-		b = &depBucket{exact: make(map[int64][]depRef, 2)}
+		b = &depBucket[InstanceKey]{exact: make(map[int64][]depRef[InstanceKey], 2)}
 		m.deps[ak] = b
 	}
-	ref := depRef{plan: p, slot: slot, dirtyOnly: dirtyOnly}
+	ref := depRef[InstanceKey]{plan: p, slot: slot, dirtyOnly: dirtyOnly}
 	if k.wildcard {
 		b.wild = appendUniqueRef(b.wild, ref)
 		return
@@ -266,7 +266,7 @@ func (m *Manager) addDepMode(p *plan, k ChangeKey, slot *sourceState, dirtyOnly 
 	b.exact[k.id] = appendUniqueRef(b.exact[k.id], ref)
 }
 
-func appendUniquePlan(list []*plan, p *plan) []*plan {
+func appendUniquePlan[InstanceKey comparable](list []*plan[InstanceKey], p *plan[InstanceKey]) []*plan[InstanceKey] {
 	for _, x := range list {
 		if x == p {
 			return list
@@ -275,7 +275,7 @@ func appendUniquePlan(list []*plan, p *plan) []*plan {
 	return append(list, p)
 }
 
-func appendUniqueRef(list []depRef, ref depRef) []depRef {
+func appendUniqueRef[InstanceKey comparable](list []depRef[InstanceKey], ref depRef[InstanceKey]) []depRef[InstanceKey] {
 	for _, x := range list {
 		if x == ref {
 			return list
@@ -287,7 +287,7 @@ func appendUniqueRef(list []depRef, ref depRef) []depRef {
 // ---- 触发调度 ----
 
 // collect 把变更 Key 反查成候选计划，并给命中的状态查询标脏。
-func (m *Manager) collect(cs *ChangeSet) {
+func (m *Manager[InstanceKey]) collect(cs *ChangeSet) {
 	for _, k := range cs.keys {
 		b := m.deps[attrKey{src: k.src, attr: k.attr}]
 		if b == nil {
@@ -313,7 +313,7 @@ func (m *Manager) collect(cs *ChangeSet) {
 	}
 }
 
-func (m *Manager) touch(ref depRef) {
+func (m *Manager[InstanceKey]) touch(ref depRef[InstanceKey]) {
 	if ref.slot != nil {
 		ref.slot.dirty = true
 		if !ref.dirtyOnly {
@@ -330,7 +330,7 @@ func (m *Manager) touch(ref depRef) {
 	m.affected = append(m.affected, ref.plan)
 }
 
-func (m *Manager) doTrigger(cs *ChangeSet) {
+func (m *Manager[InstanceKey]) doTrigger(cs *ChangeSet) {
 	m.round++
 	m.collect(cs)
 	event := cs.eventID()
@@ -357,7 +357,7 @@ func (m *Manager) doTrigger(cs *ChangeSet) {
 }
 
 // eventCandidate 报告计划里是否至少一个事件叶可能被本次事件命中。
-func (m *Manager) eventCandidate(p *plan, event int64, cs *ChangeSet) bool {
+func (m *Manager[InstanceKey]) eventCandidate(p *plan[InstanceKey], event int64, cs *ChangeSet) bool {
 	for i := range p.prog.leaves {
 		if p.prog.leaves[i].src.mayMatch(event, cs) {
 			return true
@@ -368,7 +368,7 @@ func (m *Manager) eventCandidate(p *plan, event int64, cs *ChangeSet) bool {
 
 // collectDelta 预算本轮事件增量：过滤与聚合只依赖计划与事件，
 // 与实例无关，因此每个计划每轮只算一次。
-func (m *Manager) collectDelta(p *plan, event int64, cs *ChangeSet) {
+func (m *Manager[InstanceKey]) collectDelta(p *plan[InstanceKey], event int64, cs *ChangeSet) {
 	m.pending = m.pending[:0]
 	if event == 0 {
 		return
@@ -387,12 +387,12 @@ func (m *Manager) collectDelta(p *plan, event int64, cs *ChangeSet) {
 }
 
 // applyCount 把预算好的增量记到该实例上；own 按实例检查，状态查询使用轮内共享缓存。
-func (m *Manager) applyCount(reg *registration) {
+func (m *Manager[InstanceKey]) applyCount(reg *registration[InstanceKey]) {
 	m.ctx.key = reg.key
 	m.ctx.plan = reg.plan
 	for i := range m.pending {
 		pd := &m.pending[i]
-		if !pd.lp.src.allow(&m.ctx) {
+		if !allow(pd.lp.src, &m.ctx) {
 			continue
 		}
 		m.counter.Update(reg.key, pd.lp.node, pd.lp.acc, pd.delta)
@@ -400,7 +400,7 @@ func (m *Manager) applyCount(reg *registration) {
 }
 
 // fire 求值一个实例并回调；每次求值使用独立进度切片。
-func (m *Manager) fire(reg *registration) {
+func (m *Manager[InstanceKey]) fire(reg *registration[InstanceKey]) {
 	p := reg.plan
 	m.ctx.key = reg.key
 	m.ctx.plan = p
@@ -413,7 +413,7 @@ func (m *Manager) fire(reg *registration) {
 
 // ---- 注册生命周期 ----
 
-func (m *Manager) submit(c command) {
+func (m *Manager[InstanceKey]) submit(c command[InstanceKey]) {
 	m.queue = append(m.queue, c)
 	if m.busy {
 		return
@@ -421,12 +421,12 @@ func (m *Manager) submit(c command) {
 	m.run()
 }
 
-func (m *Manager) run() {
+func (m *Manager[InstanceKey]) run() {
 	m.busy = true
 	defer func() { m.busy = false }()
 	for i := 0; i < len(m.queue); i++ {
 		c := m.queue[i]
-		m.queue[i] = command{}
+		m.queue[i] = command[InstanceKey]{}
 		switch c.kind {
 		case cmdRegister:
 			m.doRegister(c.reg)
@@ -439,7 +439,7 @@ func (m *Manager) run() {
 	m.sweepDirty()
 }
 
-func (m *Manager) doRegister(reg *registration) {
+func (m *Manager[InstanceKey]) doRegister(reg *registration[InstanceKey]) {
 	if reg.state != regPending {
 		return
 	}
@@ -452,7 +452,7 @@ func (m *Manager) doRegister(reg *registration) {
 
 // cancel 只把实例标记为墓碑并摘掉外部索引，物理回收交给 sweep：
 // 这样回调内注销任意实例都不会打断本轮遍历，也不需要 nil 空洞。
-func (m *Manager) cancel(reg *registration) {
+func (m *Manager[InstanceKey]) cancel(reg *registration[InstanceKey]) {
 	if reg.state == regCanceled {
 		return
 	}
@@ -477,7 +477,7 @@ func (m *Manager) cancel(reg *registration) {
 
 // sweepDirty 清理所有被标记的计划。只能在触发遍历之外调用：
 // run 的结尾，或非 busy 的注销路径。
-func (m *Manager) sweepDirty() {
+func (m *Manager[InstanceKey]) sweepDirty() {
 	for _, p := range m.dirtyPlans {
 		p.sweep()
 	}
@@ -485,7 +485,7 @@ func (m *Manager) sweepDirty() {
 }
 
 // sweep 移除墓碑并保持原有注册顺序；数组长度即活跃实例数。
-func (p *plan) sweep() {
+func (p *plan[InstanceKey]) sweep() {
 	if !p.dirty {
 		return
 	}

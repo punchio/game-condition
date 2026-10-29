@@ -17,15 +17,33 @@
 | --- | --- |
 | `Expr` | `Parse` 产出的不可变表达式，同时保存语法树、签名和编译好的 `program`，可跨 `Manager` 复用。 |
 | `Plans` | 配置加载期建立“表达式签名 → 编译产物”的只读计划表，供多个 `Manager` 共享；同一份计划表只接受同一套 `ParseConfig`。 |
-| `Manager` | 服务一个 owner，保存注册实例、计划本地绑定、共享状态槽、依赖索引和命令队列；不是并发安全类型。 |
+| `Manager[InstanceKey]` | 服务一个 owner，保存注册实例、计划本地绑定、共享状态槽、依赖索引和命令队列；不是并发安全类型。 |
 | `StateSource` | 由业务实现，按 `Query` 读取玩家常驻状态；事件记录不经过该接口。 |
-| `Counter` | 由业务实现，按实例键和外部叶编号保存事件累计状态，可使用内存、Redis 或数据库。 |
+| `Counter[InstanceKey]` | 由业务实现，按实例键和外部叶编号保存事件累计状态，可使用内存、Redis 或数据库。 |
 | `ChangeSet` | 描述一次业务变化，可携带一批状态依赖 Key，并可同时携带一个事件及其记录。 |
 | `Result` | 保存一次表达式求值的匹配结果、轮次和各外部叶进度。 |
 
+`InstanceKey` 是 `Manager` 与 `Counter` 共享的 `comparable` 类型参数，由业务在创建管理器时确定，不是独立的键包装类型。整数、字符串和可比较结构体都可以直接作为键；结构体可以自然携带 owner 与条件实例编号。公开构造与存储契约为：
+
+```go
+type Counter[InstanceKey comparable] interface {
+	Update(k InstanceKey, index uint16, acc Acc, val int64)
+	Read(k InstanceKey, index uint16, acc Acc) (val int64, has bool)
+	Del(k InstanceKey)
+}
+
+func NewManager[InstanceKey comparable](
+	counter Counter[InstanceKey],
+	state StateSource,
+	plans *Plans,
+) (*Manager[InstanceKey], error)
+```
+
+`Plans`、`Expr`、`ChangeSet`、`StateSource`、`Result` 和 `Handler` 不携带键类型参数。内部注册、计划绑定、依赖索引、命令队列和求值上下文使用同一个 `InstanceKey`，不经过 `any` 或运行时转换。
+
 ### 注册与表达式求值
 
-- `Register` 要求表达式已加入 `Plans`，实例键在当前 `Manager` 内唯一。注册后立即执行一次初始求值，提供 Handler 时随即回调，初始结果的 `Round` 为 0。
+- `Register` 要求表达式已加入 `Plans`，键参数类型为当前管理器的 `InstanceKey`，并在当前 `Manager` 内唯一。注册后立即执行一次初始求值，提供 Handler 时随即回调，初始结果的 `Round` 为 0。
 - 普通状态叶和事件叶编译进 `program.leaves`，按书写顺序占用外部叶编号。`own` 的语法树保留在事件取值器中，不占用外部叶编号。
 - 外层表达式求值不因 `AND` 或 `OR` 短路，确保每次结果都填齐所有外部叶的 `LeafState`；`own` 内部仍按逻辑规则短路。
 - 状态叶从共享状态槽取值，事件叶从 `Counter` 取值。`LeafState.Has=false` 表示没有可用值，该叶阈值判断不命中。
@@ -128,9 +146,9 @@ sequenceDiagram
 
 ### 计数存储契约
 
-计数状态由业务通过 `Counter` 自行维护，`Update` 与 `Read` 必须使用相同的键和聚合语义：
+计数状态由业务通过 `Counter[InstanceKey]` 自行维护，`Update` 与 `Read` 必须使用相同的键和聚合语义：
 
-- `k` 是条件实例键，在一个 `Manager` 内必须唯一。
+- `k` 的类型是业务实例化管理器时选定的 `InstanceKey comparable`，在一个 `Manager` 内必须唯一；`Register`、`Unregister` 与 Counter 的 `Update`、`Read`、`Del` 使用同一键类型。
 - `index` 是叶节点在条件表达式内的索引，从 0 开始按书写顺序递增，与结果进度中的叶节点编号一致；它不是事件序号、样本序号或全局计数槽位。
 - 状态叶也占用叶节点索引，但只有事件叶读写计数器。计数器按 `(k, index)` 保存对应事件叶的累计状态。
 - 一个事件叶在一次事件中最多产生一个聚合值，并调用一次 `Update(k, index, acc, val)`。同一事件叶在多次事件中使用相同的 `k` 和 `index`。
@@ -138,6 +156,7 @@ sequenceDiagram
 - `count` 每次匹配事件计一次；`sum` 累加各次事件的和；`avg` 以每次事件聚合出的均值为一次观测，计算这些观测值的平均，而不是跨事件展开所有原始记录后重新求总体均值；其余聚合同样以每次事件聚合后的单值为观测。
 - 单事件 `avg` 先以 `int64` 求和；检测到溢出时使用精确整数重新聚合，除法保持向零取整，不允许静默回绕。
 - 表达式中叶节点的增删或顺序调整会改变 `index`，业务需要同步重置或迁移对应实例的历史计数，不能沿用旧叶索引解释新表达式。
+- 多个 owner 共享同一个 Counter 时，键必须在共享存储范围内唯一。可以使用包含 owner 与条件编号的可比较结构体，避免不同 owner 的进度互相覆盖。
 
 # 表达式配置
 

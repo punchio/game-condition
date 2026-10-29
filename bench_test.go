@@ -112,10 +112,10 @@ func benchExpr(b *testing.B, tid int64) Expr {
 	return e
 }
 
-func newBenchManager(b *testing.B, n int) (*Manager, *benchState, *Plans) {
+func newBenchManager(b *testing.B, n int) (*Manager[uint64], *benchState, *Plans) {
 	b.Helper()
 	state := newBenchState(n)
-	counter := newMemCounter()
+	counter := newMemCounter[uint64]()
 	plans := NewPlans()
 	m, err := NewManager(counter, state, plans)
 	if err != nil {
@@ -132,7 +132,7 @@ func BenchmarkSameExpr_1000Regs_50Trigger_1Hit(b *testing.B) {
 		b.Fatal(err)
 	}
 	for i := 0; i < 1000; i++ {
-		if err := m.Register(InstanceKey(i+1), e, nil); err != nil {
+		if err := m.Register(uint64(i+1), e, nil); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -161,7 +161,7 @@ func BenchmarkSameExpr_1000Regs_Notify(b *testing.B) {
 	}
 	h := func(Result) bool { return false }
 	for i := 0; i < 1000; i++ {
-		if err := m.Register(InstanceKey(i+1), e, h); err != nil {
+		if err := m.Register(uint64(i+1), e, h); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -185,7 +185,7 @@ func BenchmarkSameExpr_1000Regs_Notify(b *testing.B) {
 func BenchmarkSameExpr_1000Regs_FullScan(b *testing.B) {
 	state := newBenchState(1000)
 	state.fullScan = true
-	counter := newMemCounter()
+	counter := newMemCounter[uint64]()
 	plans := NewPlans()
 	m, err := NewManager(counter, state, plans)
 	if err != nil {
@@ -196,7 +196,7 @@ func BenchmarkSameExpr_1000Regs_FullScan(b *testing.B) {
 		b.Fatal(err)
 	}
 	for i := 0; i < 1000; i++ {
-		if err := m.Register(InstanceKey(i+1), e, nil); err != nil {
+		if err := m.Register(uint64(i+1), e, nil); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -220,7 +220,7 @@ func BenchmarkSameExpr_1000Regs_FullScan(b *testing.B) {
 func BenchmarkDistinctExpr_1000Regs_FullScan(b *testing.B) {
 	state := newBenchState(1000)
 	state.fullScan = true
-	counter := newMemCounter()
+	counter := newMemCounter[uint64]()
 	plans := NewPlans()
 	m, err := NewManager(counter, state, plans)
 	if err != nil {
@@ -231,7 +231,7 @@ func BenchmarkDistinctExpr_1000Regs_FullScan(b *testing.B) {
 		if err := plans.Add(e); err != nil {
 			b.Fatal(err)
 		}
-		if err := m.Register(InstanceKey(i+1), e, nil); err != nil {
+		if err := m.Register(uint64(i+1), e, nil); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -259,7 +259,7 @@ func BenchmarkDistinctExpr_1000Regs_50Trigger_1Hit(b *testing.B) {
 		if err := plans.Add(e); err != nil {
 			b.Fatal(err)
 		}
-		if err := m.Register(InstanceKey(i+1), e, nil); err != nil {
+		if err := m.Register(uint64(i+1), e, nil); err != nil {
 			b.Fatal(err)
 		}
 	}

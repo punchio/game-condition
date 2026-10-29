@@ -151,21 +151,21 @@ func (p *program) hasEvent() bool {
 }
 
 // evalContext 是一次求值需要的外部世界。
-type evalContext struct {
+type evalContext[InstanceKey comparable] struct {
 	state   StateSource
-	counter Counter
+	counter Counter[InstanceKey]
 	key     InstanceKey
-	plan    *plan
+	plan    *plan[InstanceKey]
 }
 
 // evalPlan 求值一个计划实例，并返回本次求值独有的进度。
 // 状态叶读 plan.slots 的共享结果，同一轮内同一查询只调用一次 StateSource.Eval。
-func evalPlan(p *plan, ctx *evalContext) (bool, []LeafState) {
+func evalPlan[InstanceKey comparable](p *plan[InstanceKey], ctx *evalContext[InstanceKey]) (bool, []LeafState) {
 	progress := make([]LeafState, len(p.prog.leaves))
 	return evalNode(p, p.prog.root, ctx, progress), progress
 }
 
-func evalNode(p *plan, i int32, ctx *evalContext, progress []LeafState) bool {
+func evalNode[InstanceKey comparable](p *plan[InstanceKey], i int32, ctx *evalContext[InstanceKey], progress []LeafState) bool {
 	n := &p.prog.nodes[i]
 	switch n.kind {
 	case planAnd:
@@ -198,7 +198,7 @@ func evalNode(p *plan, i int32, ctx *evalContext, progress []LeafState) bool {
 	return false
 }
 
-func readSourceState(slot *sourceState, state StateSource) (int64, bool) {
+func readSourceState[InstanceKey comparable](slot *sourceState[InstanceKey], state StateSource) (int64, bool) {
 	if slot == nil {
 		return 0, false
 	}
@@ -213,7 +213,7 @@ func readSourceState(slot *sourceState, state StateSource) (int64, bool) {
 	return slot.value, slot.has
 }
 
-func leafValue(p *plan, lp *leafPlan, ctx *evalContext) (int64, bool) {
+func leafValue[InstanceKey comparable](p *plan[InstanceKey], lp *leafPlan, ctx *evalContext[InstanceKey]) (int64, bool) {
 	if lp.kind == readerState {
 		return readSourceState(p.slots[lp.slot], ctx.state)
 	}
