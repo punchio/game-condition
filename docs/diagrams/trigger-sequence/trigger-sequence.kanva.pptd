@@ -1,0 +1,24 @@
+version: v2
+title: Trigger 运行时序
+size:
+- 1920
+- 1280
+customFonts:
+- family: MiSans
+  src: https://statics.kimi.ai/neo-design-static/p-font/MiSans.ttf
+- family: Liter
+  src: https://statics.kimi.ai/neo-design-static/p-font/Liter.ttf
+theme:
+  colors:
+    bg: '#F7F5F0'
+    ink: '#18231F'
+    muted: '#68736D'
+    teal: '#176B57'
+    amber: '#A96A12'
+    amberLight: '#F3E7CF'
+    header: '#E8ECE7'
+    line: '#D8DCD5'
+    frame: '#AAB4AD'
+    lifeline: '#C8CEC8'
+pages:
+- pages/1_trigger.page

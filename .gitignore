@@ -1,0 +1,25 @@
+# Go binaries and test artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.*
+
+# Local Go workspaces
+go.work
+go.work.sum
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Internal design and planning artifacts
+/docs/superpowers/
+
+# Diagram validation previews
+/docs/diagrams/**/preview/

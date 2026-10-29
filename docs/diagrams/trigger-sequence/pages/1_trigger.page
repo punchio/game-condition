@@ -1,0 +1,2172 @@
+pageType: content
+background:
+  type: solid
+  color: $bg
+elements:
+- elementId: canvas-1
+  elementType: shape
+  bounds:
+  - 0
+  - 0
+  - 1920
+  - 1280
+  shapeName: rect
+  fill:
+    type: solid
+    color: $bg
+- elementId: line-2
+  elementType: line
+  bounds:
+  - 42
+  - 244
+  - 1836
+  - 2
+  viewBox:
+  - 1836
+  - 2
+  points: 0,1 1836,1
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: solid
+    width: 1
+    color: $line
+- elementId: line-3
+  elementType: line
+  bounds:
+  - 42
+  - 424
+  - 1836
+  - 2
+  viewBox:
+  - 1836
+  - 2
+  points: 0,1 1836,1
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: solid
+    width: 1
+    color: $line
+- elementId: line-4
+  elementType: line
+  bounds:
+  - 42
+  - 554
+  - 1836
+  - 2
+  viewBox:
+  - 1836
+  - 2
+  points: 0,1 1836,1
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: solid
+    width: 1
+    color: $line
+- elementId: line-5
+  elementType: line
+  bounds:
+  - 42
+  - 709
+  - 1836
+  - 2
+  viewBox:
+  - 1836
+  - 2
+  points: 0,1 1836,1
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: solid
+    width: 1
+    color: $line
+- elementId: line-6
+  elementType: line
+  bounds:
+  - 42
+  - 909
+  - 1836
+  - 2
+  viewBox:
+  - 1836
+  - 2
+  points: 0,1 1836,1
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: solid
+    width: 1
+    color: $line
+- elementId: line-7
+  elementType: line
+  bounds:
+  - 42
+  - 1099
+  - 1836
+  - 2
+  viewBox:
+  - 1836
+  - 2
+  points: 0,1 1836,1
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: solid
+    width: 1
+    color: $line
+- elementId: plan-loop-8
+  elementType: shape
+  bounds:
+  - 232
+  - 425
+  - 1648
+  - 655
+  shapeName: rect
+  border:
+    style: solid
+    width: 1
+    color: $frame
+- elementId: loop-label-9
+  elementType: text
+  bounds:
+  - 248
+  - 429
+  - 180
+  - 24
+  content:
+    text: loop　候选计划
+    fontSize: 12
+    fontFamily: &id001
+      latin: Liter
+      ea: MiSans
+    color: $muted
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: instance-loop-10
+  elementType: shape
+  bounds:
+  - 232
+  - 710
+  - 1648
+  - 370
+  shapeName: rect
+  border:
+    style: solid
+    width: 1.4
+    color: $teal
+- elementId: loop-label-11
+  elementType: text
+  bounds:
+  - 248
+  - 714
+  - 300
+  - 24
+  content:
+    text: loop　活跃实例（按注册顺序）
+    fontSize: 12
+    fontFamily: *id001
+    color: $teal
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: line-12
+  elementType: line
+  bounds:
+  - 279
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-13
+  elementType: line
+  bounds:
+  - 499
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-14
+  elementType: line
+  bounds:
+  - 719
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-15
+  elementType: line
+  bounds:
+  - 939
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-16
+  elementType: line
+  bounds:
+  - 1159
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-17
+  elementType: line
+  bounds:
+  - 1379
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-18
+  elementType: line
+  bounds:
+  - 1599
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: line-19
+  elementType: line
+  bounds:
+  - 1819
+  - 228
+  - 2
+  - 957
+  viewBox:
+  - 2
+  - 957
+  points: 1,0 1,957
+  curve: sharp
+  arrow:
+  - null
+  - null
+  border:
+    style: dash
+    width: 1
+    color: $lifeline
+- elementId: participant-bg-20
+  elementType: shape
+  bounds:
+  - 185.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-21
+  elementType: shape
+  bounds:
+  - 185.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-22
+  elementType: text
+  bounds:
+  - 190.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: 业务调用方
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-23
+  elementType: text
+  bounds:
+  - 190.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: ChangeSet
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-24
+  elementType: shape
+  bounds:
+  - 405.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-accent-25
+  elementType: shape
+  bounds:
+  - 405.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-26
+  elementType: text
+  bounds:
+  - 410.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: Manager
+    fontSize: 15
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-27
+  elementType: text
+  bounds:
+  - 410.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: doTrigger
+    fontSize: 10.5
+    fontFamily: *id001
+    color: '#D8EEE7'
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-28
+  elementType: shape
+  bounds:
+  - 625.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-29
+  elementType: shape
+  bounds:
+  - 625.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-30
+  elementType: text
+  bounds:
+  - 630.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: 依赖索引
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-31
+  elementType: text
+  bounds:
+  - 630.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: deps / depRef
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-32
+  elementType: shape
+  bounds:
+  - 845.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-33
+  elementType: shape
+  bounds:
+  - 845.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-34
+  elementType: text
+  bounds:
+  - 850.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: plan
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-35
+  elementType: text
+  bounds:
+  - 850.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: 候选粗筛 / 事件预算
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-36
+  elementType: shape
+  bounds:
+  - 1065.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-37
+  elementType: shape
+  bounds:
+  - 1065.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $amber
+- elementId: participant-title-38
+  elementType: text
+  bounds:
+  - 1070.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: 共享状态槽
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-39
+  elementType: text
+  bounds:
+  - 1070.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: sourceState / StateSource
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-40
+  elementType: shape
+  bounds:
+  - 1285.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-41
+  elementType: shape
+  bounds:
+  - 1285.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-42
+  elementType: text
+  bounds:
+  - 1290.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: Counter
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-43
+  elementType: text
+  bounds:
+  - 1290.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: Update / Read
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-44
+  elementType: shape
+  bounds:
+  - 1505.0
+  - 170
+  - 190
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-45
+  elementType: shape
+  bounds:
+  - 1505.0
+  - 170
+  - 190
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-46
+  elementType: text
+  bounds:
+  - 1510.0
+  - 178
+  - 180
+  - 24
+  content:
+    text: evalPlan
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-47
+  elementType: text
+  bounds:
+  - 1510.0
+  - 201
+  - 180
+  - 19
+  content:
+    text: Match / Progress
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-bg-48
+  elementType: shape
+  bounds:
+  - 1730.0
+  - 170
+  - 180
+  - 58
+  shapeName: rect
+  fill:
+    type: solid
+    color: $header
+- elementId: participant-accent-49
+  elementType: shape
+  bounds:
+  - 1730.0
+  - 170
+  - 180
+  - 3
+  shapeName: rect
+  fill:
+    type: solid
+    color: $teal
+- elementId: participant-title-50
+  elementType: text
+  bounds:
+  - 1735.0
+  - 178
+  - 170
+  - 24
+  content:
+    text: Handler
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: participant-subtitle-51
+  elementType: text
+  bounds:
+  - 1735.0
+  - 201
+  - 170
+  - 19
+  content:
+    text: 可选
+    fontSize: 10.5
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: title-52
+  elementType: text
+  bounds:
+  - 48
+  - 38
+  - 800
+  - 48
+  content:
+    text: Trigger 运行时序
+    fontSize: 34
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: subtitle-53
+  elementType: text
+  bounds:
+  - 50
+  - 91
+  - 980
+  - 28
+  content:
+    text: 条件系统 · 状态标脏、事件增量与实例求值
+    fontSize: 16
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: eyebrow-54
+  elementType: text
+  bounds:
+  - 1450
+  - 48
+  - 420
+  - 24
+  content:
+    text: CURRENT IMPLEMENTATION
+    fontSize: 12
+    fontFamily: *id001
+    color: $teal
+    bold: true
+    lineHeight: 1.15
+    align:
+    - right
+    - middle
+    wrap: false
+- elementId: meta-55
+  elementType: text
+  bounds:
+  - 1450
+  - 77
+  - 420
+  - 24
+  content:
+    text: 六步处理 · 两级循环
+    fontSize: 13
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - right
+    - middle
+    wrap: false
+- elementId: phase-number-bg-56
+  elementType: shape
+  bounds:
+  - 48
+  - 258
+  - 30
+  - 30
+  shapeName: rect
+  fill:
+    type: solid
+    color: $ink
+- elementId: phase-number-57
+  elementType: text
+  bounds:
+  - 48
+  - 258
+  - 30
+  - 30
+  content:
+    text: '01'
+    fontSize: 13
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: phase-title-58
+  elementType: text
+  bounds:
+  - 88
+  - 257
+  - 140
+  - 30
+  content:
+    text: 收集标脏
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-tag-59
+  elementType: text
+  bounds:
+  - 88
+  - 287
+  - 145
+  - 24
+  content:
+    text: round / collect
+    fontSize: 11
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-number-bg-60
+  elementType: shape
+  bounds:
+  - 48
+  - 445
+  - 30
+  - 30
+  shapeName: rect
+  fill:
+    type: solid
+    color: $ink
+- elementId: phase-number-61
+  elementType: text
+  bounds:
+  - 48
+  - 445
+  - 30
+  - 30
+  content:
+    text: '02'
+    fontSize: 13
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: phase-title-62
+  elementType: text
+  bounds:
+  - 88
+  - 444
+  - 140
+  - 30
+  content:
+    text: 候选粗筛
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-tag-63
+  elementType: text
+  bounds:
+  - 88
+  - 474
+  - 145
+  - 24
+  content:
+    text: 计划级
+    fontSize: 11
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-number-bg-64
+  elementType: shape
+  bounds:
+  - 48
+  - 570
+  - 30
+  - 30
+  shapeName: rect
+  fill:
+    type: solid
+    color: $ink
+- elementId: phase-number-65
+  elementType: text
+  bounds:
+  - 48
+  - 570
+  - 30
+  - 30
+  content:
+    text: '03'
+    fontSize: 13
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: phase-title-66
+  elementType: text
+  bounds:
+  - 88
+  - 569
+  - 140
+  - 30
+  content:
+    text: 事件增量
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-tag-67
+  elementType: text
+  bounds:
+  - 88
+  - 599
+  - 145
+  - 24
+  content:
+    text: 计划级 · 一次
+    fontSize: 11
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-number-bg-68
+  elementType: shape
+  bounds:
+  - 48
+  - 738
+  - 30
+  - 30
+  shapeName: rect
+  fill:
+    type: solid
+    color: $ink
+- elementId: phase-number-69
+  elementType: text
+  bounds:
+  - 48
+  - 738
+  - 30
+  - 30
+  content:
+    text: '04'
+    fontSize: 13
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: phase-title-70
+  elementType: text
+  bounds:
+  - 88
+  - 737
+  - 140
+  - 30
+  content:
+    text: own / Counter
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-tag-71
+  elementType: text
+  bounds:
+  - 88
+  - 767
+  - 145
+  - 24
+  content:
+    text: 实例级
+    fontSize: 11
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-number-bg-72
+  elementType: shape
+  bounds:
+  - 48
+  - 928
+  - 30
+  - 30
+  shapeName: rect
+  fill:
+    type: solid
+    color: $ink
+- elementId: phase-number-73
+  elementType: text
+  bounds:
+  - 48
+  - 928
+  - 30
+  - 30
+  content:
+    text: '05'
+    fontSize: 13
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: phase-title-74
+  elementType: text
+  bounds:
+  - 88
+  - 927
+  - 140
+  - 30
+  content:
+    text: 求值回调
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-tag-75
+  elementType: text
+  bounds:
+  - 88
+  - 957
+  - 145
+  - 24
+  content:
+    text: 实例级 · 独立 Progress
+    fontSize: 11
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-number-bg-76
+  elementType: shape
+  bounds:
+  - 48
+  - 1112
+  - 30
+  - 30
+  shapeName: rect
+  fill:
+    type: solid
+    color: $ink
+- elementId: phase-number-77
+  elementType: text
+  bounds:
+  - 48
+  - 1112
+  - 30
+  - 30
+  content:
+    text: '06'
+    fontSize: 13
+    fontFamily: *id001
+    color: '#FFFFFF'
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: phase-title-78
+  elementType: text
+  bounds:
+  - 88
+  - 1111
+  - 140
+  - 30
+  content:
+    text: 重入清理
+    fontSize: 15
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: phase-tag-79
+  elementType: text
+  bounds:
+  - 88
+  - 1141
+  - 145
+  - 24
+  content:
+    text: 队列 / 墓碑
+    fontSize: 11
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: own-note-bg-80
+  elementType: shape
+  bounds:
+  - 1240
+  - 267
+  - 590
+  - 112
+  shapeName: rect
+  fill:
+    type: solid
+    color: $amberLight
+- elementId: own-note-accent-81
+  elementType: shape
+  bounds:
+  - 1240
+  - 267
+  - 5
+  - 112
+  shapeName: rect
+  fill:
+    type: solid
+    color: $amber
+- elementId: own-note-title-82
+  elementType: text
+  bounds:
+  - 1262
+  - 276
+  - 540
+  - 26
+  content:
+    text: own-only 分支
+    fontSize: 14
+    fontFamily: *id001
+    color: $amber
+    bold: true
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: own-note-body-83
+  elementType: text
+  bounds:
+  - 1262
+  - 307
+  - 540
+  - 56
+  content:
+    text: 'slot.dirty = true；不加入 affected
+
+      不回调、不求值、不更新 Counter'
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.3
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: line-84
+  elementType: line
+  bounds:
+  - 280
+  - 279
+  - 220
+  - 2
+  viewBox:
+  - 220
+  - 2
+  points: 0,1 220,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-85
+  elementType: text
+  bounds:
+  - 292.0
+  - 249
+  - 196
+  - 26
+  content:
+    text: Trigger(cs)，round++
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-86
+  elementType: line
+  bounds:
+  - 500
+  - 322
+  - 220
+  - 2
+  viewBox:
+  - 220
+  - 2
+  points: 0,1 220,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-87
+  elementType: text
+  bounds:
+  - 512.0
+  - 292
+  - 196
+  - 26
+  content:
+    text: collect(keys)
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-88
+  elementType: line
+  bounds:
+  - 500
+  - 354
+  - 220
+  - 2
+  viewBox:
+  - 220
+  - 2
+  points: 220,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $teal
+- elementId: message-label-89
+  elementType: text
+  bounds:
+  - 512.0
+  - 324
+  - 196
+  - 26
+  content:
+    text: depRef
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-90
+  elementType: line
+  bounds:
+  - 500
+  - 389
+  - 660
+  - 2
+  viewBox:
+  - 660
+  - 2
+  points: 0,1 660,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-91
+  elementType: text
+  bounds:
+  - 650
+  - 359
+  - 400
+  - 26
+  content:
+    text: 普通状态 / own 依赖：标脏查询槽
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-92
+  elementType: line
+  bounds:
+  - 500
+  - 489
+  - 440
+  - 2
+  viewBox:
+  - 440
+  - 2
+  points: 0,1 440,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-93
+  elementType: text
+  bounds:
+  - 512.0
+  - 459
+  - 416
+  - 26
+  content:
+    text: activeCount + eventCandidate
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-94
+  elementType: line
+  bounds:
+  - 500
+  - 524
+  - 440
+  - 2
+  viewBox:
+  - 440
+  - 2
+  points: 440,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $teal
+- elementId: message-label-95
+  elementType: text
+  bounds:
+  - 512.0
+  - 494
+  - 416
+  - 26
+  content:
+    text: 保留或跳过
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-96
+  elementType: line
+  bounds:
+  - 500
+  - 604
+  - 440
+  - 2
+  viewBox:
+  - 440
+  - 2
+  points: 0,1 440,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-97
+  elementType: text
+  bounds:
+  - 512.0
+  - 574
+  - 416
+  - 26
+  content:
+    text: collectDelta
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-98
+  elementType: line
+  bounds:
+  - 940
+  - 628
+  - 66
+  - 34
+  viewBox:
+  - 66
+  - 34
+  points: 0,0 66,0 66,34 0,34
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.4
+    color: $teal
+- elementId: self-label-99
+  elementType: text
+  bounds:
+  - 1016
+  - 626
+  - 280
+  - 30
+  content:
+    text: 过滤 + 聚合（每计划一次）
+    fontSize: 12
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: line-100
+  elementType: line
+  bounds:
+  - 500
+  - 679
+  - 440
+  - 2
+  viewBox:
+  - 440
+  - 2
+  points: 440,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $teal
+- elementId: message-label-101
+  elementType: text
+  bounds:
+  - 512.0
+  - 649
+  - 416
+  - 26
+  content:
+    text: pendingDelta
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-102
+  elementType: line
+  bounds:
+  - 500
+  - 755
+  - 66
+  - 34
+  viewBox:
+  - 66
+  - 34
+  points: 0,0 66,0 66,34 0,34
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.4
+    color: $teal
+- elementId: self-label-103
+  elementType: text
+  bounds:
+  - 576
+  - 753
+  - 190
+  - 30
+  content:
+    text: 绑定当前 key / plan
+    fontSize: 12
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: line-104
+  elementType: line
+  bounds:
+  - 500
+  - 804
+  - 660
+  - 2
+  viewBox:
+  - 660
+  - 2
+  points: 0,1 660,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-105
+  elementType: text
+  bounds:
+  - 650
+  - 774
+  - 400
+  - 26
+  content:
+    text: own 读取共享状态槽
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-106
+  elementType: line
+  bounds:
+  - 500
+  - 837
+  - 660
+  - 2
+  viewBox:
+  - 660
+  - 2
+  points: 660,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $muted
+- elementId: message-label-107
+  elementType: text
+  bounds:
+  - 650
+  - 807
+  - 400
+  - 26
+  content:
+    text: value / has（dirty 时 Eval）
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-108
+  elementType: line
+  bounds:
+  - 500
+  - 874
+  - 880
+  - 2
+  viewBox:
+  - 880
+  - 2
+  points: 0,1 880,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-109
+  elementType: text
+  bounds:
+  - 690
+  - 844
+  - 360
+  - 26
+  content:
+    text: own 满足才 Update
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-110
+  elementType: line
+  bounds:
+  - 500
+  - 949
+  - 1100
+  - 2
+  viewBox:
+  - 1100
+  - 2
+  points: 0,1 1100,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-111
+  elementType: text
+  bounds:
+  - 512.0
+  - 919
+  - 1076
+  - 26
+  content:
+    text: evalPlan(p, ctx)
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: progress-note-112
+  elementType: text
+  bounds:
+  - 1500
+  - 965
+  - 200
+  - 24
+  content:
+    text: 每次新建 Progress
+    fontSize: 12
+    fontFamily: *id001
+    color: $teal
+    bold: true
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-113
+  elementType: line
+  bounds:
+  - 500
+  - 1004
+  - 1100
+  - 2
+  viewBox:
+  - 1100
+  - 2
+  points: 1100,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $muted
+- elementId: message-label-114
+  elementType: text
+  bounds:
+  - 512.0
+  - 974
+  - 1076
+  - 26
+  content:
+    text: match, progress
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-115
+  elementType: line
+  bounds:
+  - 500
+  - 1039
+  - 1320
+  - 2
+  viewBox:
+  - 1320
+  - 2
+  points: 0,1 1320,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: message-label-116
+  elementType: text
+  bounds:
+  - 512.0
+  - 1009
+  - 1296
+  - 26
+  content:
+    text: Handler(Result)
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-117
+  elementType: line
+  bounds:
+  - 500
+  - 1069
+  - 1320
+  - 2
+  viewBox:
+  - 1320
+  - 2
+  points: 1320,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $muted
+- elementId: message-label-118
+  elementType: text
+  bounds:
+  - 512.0
+  - 1039
+  - 1296
+  - 26
+  content:
+    text: true → cancel / Del
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-119
+  elementType: line
+  bounds:
+  - 500
+  - 1135
+  - 66
+  - 34
+  viewBox:
+  - 66
+  - 34
+  points: 0,0 66,0 66,34 0,34
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.4
+    color: $teal
+- elementId: self-label-120
+  elementType: text
+  bounds:
+  - 576
+  - 1133
+  - 330
+  - 30
+  content:
+    text: 队列命令继续执行；最终 sweepDirty
+    fontSize: 12
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: line-121
+  elementType: line
+  bounds:
+  - 280
+  - 1179
+  - 220
+  - 2
+  viewBox:
+  - 220
+  - 2
+  points: 220,1 0,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.6
+    color: $muted
+- elementId: message-label-122
+  elementType: text
+  bounds:
+  - 292.0
+  - 1149
+  - 196
+  - 26
+  content:
+    text: Trigger 返回
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: false
+    lineHeight: 1.15
+    align:
+    - center
+    - middle
+    wrap: false
+- elementId: line-123
+  elementType: line
+  bounds:
+  - 48
+  - 1229
+  - 52
+  - 2
+  viewBox:
+  - 52
+  - 2
+  points: 0,1 52,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: solid
+    width: 1.6
+    color: $teal
+- elementId: text-124
+  elementType: text
+  bounds:
+  - 112
+  - 1216
+  - 100
+  - 28
+  content:
+    text: 调用
+    fontSize: 12
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: line-125
+  elementType: line
+  bounds:
+  - 190
+  - 1229
+  - 52
+  - 2
+  viewBox:
+  - 52
+  - 2
+  points: 0,1 52,1
+  curve: sharp
+  arrow:
+  - null
+  - stealth
+  border:
+    style: dash
+    width: 1.4
+    color: $muted
+- elementId: text-126
+  elementType: text
+  bounds:
+  - 254
+  - 1216
+  - 100
+  - 28
+  content:
+    text: 返回
+    fontSize: 12
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: legend-amber-127
+  elementType: shape
+  bounds:
+  - 340
+  - 1222
+  - 12
+  - 12
+  shapeName: rect
+  fill:
+    type: solid
+    color: $amber
+- elementId: text-128
+  elementType: text
+  bounds:
+  - 362
+  - 1216
+  - 230
+  - 28
+  content:
+    text: own-only 提前结束
+    fontSize: 12
+    fontFamily: *id001
+    color: $muted
+    bold: false
+    lineHeight: 1.15
+    align:
+    - left
+    - middle
+    wrap: false
+- elementId: footer-note-129
+  elementType: text
+  bounds:
+  - 1150
+  - 1216
+  - 720
+  - 28
+  content:
+    text: 同一轮共享状态；Progress 每次求值独立分配
+    fontSize: 13
+    fontFamily: *id001
+    color: $ink
+    bold: true
+    lineHeight: 1.15
+    align:
+    - right
+    - middle
+    wrap: false
